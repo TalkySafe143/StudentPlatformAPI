@@ -6,6 +6,26 @@ const logger = require('morgan');
 const helmet = require('helmet')
 const cors = require('cors')
 
+// Swagger
+const swaggerUI = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
+
+const swaggerSpecs = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Javeplatform API",
+      version: "1.0.0"
+    },
+    servers: [
+      {
+        url: "http://localhost:3000"
+      }
+    ]
+  },
+  apis: [`${path.join(__dirname, './routes/*.js')}`]
+}
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const materialRouter = require('./routes/material');
@@ -21,6 +41,8 @@ app.use(cookieParser());
 app.use('/api/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/material', materialRouter);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(swaggerSpecs)))
+
 
 // catch 404 and forward to error handler
 app.use( (req, res, next) => {
