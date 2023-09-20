@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('javeplatformapi:server');
+const debug = require('debug')('www');
 var http = require('http');
 
 /**

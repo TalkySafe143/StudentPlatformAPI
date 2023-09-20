@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const upload = require('multer')();
 const materialesController = require('../controllers/materialController');
+const { multerMiddleware } = require('../utils/multerConfig')
 
 /**
  * @swagger
@@ -19,7 +20,7 @@ const materialesController = require('../controllers/materialController');
  *              description: Algo ocurrió al momento de crear el material
  *
  */
-router.post('/', upload.single('uploadedFile'), materialesController.uploadFile)
+router.post('/',upload.single('uploadedFiles'), materialesController.uploadFile);
 
 /**
  * @swagger
@@ -34,5 +35,7 @@ router.post('/', upload.single('uploadedFile'), materialesController.uploadFile)
  *
  */
 router.get('/', materialesController.getAllFiles);
+
+router.delete('/:key', materialesController.deleteMaterial);
 
 module.exports = router;

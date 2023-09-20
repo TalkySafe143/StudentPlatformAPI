@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet')
 const cors = require('cors')
-
 // Swagger
 const swaggerUI = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -29,6 +28,8 @@ const swaggerSpecs = {
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const materialRouter = require('./routes/material');
+const testRouter = require('./routes/test');
+const materiasRouter = require('./routes/materias');
 
 const app = express();
 
@@ -39,8 +40,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/api/', indexRouter);
+app.use('/api/test', testRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/material', materialRouter);
+app.use('/api/materias', materiasRouter)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(swaggerSpecs)))
 
 

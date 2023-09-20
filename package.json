@@ -7,8 +7,11 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@aws-sdk/client-rds": "^3.405.0",
+    "@aws-sdk/client-rds-data": "^3.405.0",
     "@aws-sdk/client-s3": "^3.397.0",
     "@aws-sdk/lib-storage": "^3.397.0",
+    "@hapi/boom": "^10.0.1",
     "aws-sdk": "^2.1442.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "~1.4.4",
@@ -19,11 +22,16 @@
     "formidable": "^3.5.0",
     "helmet": "^7.0.0",
     "http-errors": "~1.6.3",
+    "i": "^0.3.7",
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
     "nodemon": "^3.0.1",
+    "npm": "^10.1.0",
+    "promise-mysql": "^5.2.0",
     "pug": "2.0.0-beta11",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "uuid": "^9.0.1"
   }
 }
