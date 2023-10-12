@@ -1,26 +1,17 @@
 const RDS = require('../lib/rds');
 const rds = new RDS();
+
+const encryptionWorker = require("../utils/encryptionWorker");
+
 async function createUser(req, res, next) {
     const user = req.body;
-    const onlyLettersPattern = /^[A-Za-z0-9]+$/;
-    // SQL injection
-    for (const [key, value] of Object.entries(user)) {
-        if (key.toUpperCase().includes("SELECT")
-            || key.toUpperCase().includes("DELETE")
-            || key.toUpperCase().includes("INSERT")
-            || key.toUpperCase().includes("UPDATE")
-            || value.toUpperCase().includes("SELECT")
-            || value.toUpperCase().includes("DELETE")
-            || value.toUpperCase().includes("INSERT")
-            || value.toUpperCase().includes("UPDATE")
-            || !key.match(onlyLettersPattern)
-            || !value.match(onlyLettersPattern)) {
-            return res.status(400).json({
-                err: "SQL Injection?"
-            })
-        }
-    }
 
+    if (encryptionWorker.checkSQLEntry(user)) {
+      return res.status(404).json({
+        error: "Ups, al parecer tu query esta mal estructurada"
+      })
+    }
+  
     const data = await rds.insertData("estudiante", user);
 
     res.status(200).json({
@@ -37,4 +28,70 @@ async function getAllUsers(req, res, next) {
     })
 }
 
-module.exports = { createUser, getAllUsers }
+async function getOneUser(req, res, next){
+  const { id } = req.params;
+
+  const queryObject = {
+    "FROM": ["estudiante"],
+    "WHERE": [{
+      "column": "cc",
+      "type": "=",
+      "value": `'${id}'`
+    }]
+  }
+  
+  const data = await rds.buildSelectQuery(queryObject);
+
+  res.status(200).json({
+    message: "Usuario extraido correctamente",
+    data
+  })
+}
+
+async function updateUser(req, res, next) {
+  const {id} = req.params;
+
+  if (encryptionWorker.checkSQLEntry(req.body)) {
+    return res.status(404).json({
+      error: "Ups, algo paso en la consulta"
+    });
+  }
+
+  
+  const updateObject = {
+    "column": Object.entries(req.body)[0][0],
+    "newValue": Object.entries(req.body)[0][1],
+    "condition": [{
+      "column": "cc",
+      "type" : "=",
+      "value": `'${id}'`
+    }]
+  }
+
+  const data = await rds.buildUpdateQuery("estudiante", updateObject);
+
+  res.status(200).json({
+    message: "Usuario actualizado correctamente",
+    data
+  })
+}
+
+async function deleteUser(req, res, next) {
+  const {id} = req.params;
+  const deleteObject = {
+    "condition": [{
+      "column": "cc",
+      "type": "=",
+      "value": `'${id}'`
+    }]
+  }
+
+  const data = await rds.buildDeleteQuery("estudiante", deleteObject);
+
+  res.status(200).json({
+    message: "Usuario eliminado exitosamente",
+    data
+  })
+}
+
+module.exports = { createUser, getAllUsers, getOneUser, updateUser, deleteUser };
