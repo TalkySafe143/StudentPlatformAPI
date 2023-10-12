@@ -14,6 +14,8 @@ async function createUser(req, res, next) {
   
     const data = await rds.insertData("estudiante", user);
 
+    if (req.jwtProcess) return data;
+  
     res.status(200).json({
         message: "Usuario creado exitosamente",
         data

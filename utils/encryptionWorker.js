@@ -1,4 +1,4 @@
-.const bcrypt = require("bcrypt"):
+const bcrypt = require("bcrypt");
 
 function checkSQLEntry(entry) {
   const onlyLettersPattern = /^[A-Za-z0-9]+$/;
