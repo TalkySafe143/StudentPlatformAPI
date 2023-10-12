@@ -10,6 +10,7 @@ const config = {
     AWS_RDS_USER:process.env.AWS_RDS_USER,
     AWS_RDS_PASSWORD:process.env.AWS_RDS_PASSWORD,
     AWS_RDS_DB:process.env.AWS_RDS_DB,
+    JWT_SECRET: process.env.JWT_SECRET
 }
 
 module.exports = config;

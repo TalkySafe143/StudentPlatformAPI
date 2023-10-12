@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/usersController');
+const passport = require("passport");
+require("../utils/auth/strategies/jwt");
+
 /* GET users listing. */
 
-router.get('/all', usersController.getAllUsers);
+router.get('/all', passport.authenticate('jwt', { session: false }),usersController.getAllUsers);
 
-router.post('/new', usersController.createUser);
+router.post('/new', passport.authenticate('jwt', { session: false }),usersController.createUser);
 
-router.get('/:id', usersController.getOneUser);
+router.get('/:id', passport.authenticate('jwt', { session: false }),usersController.getOneUser);
 
-router.put('/:id', usersController.updateUser);
+router.put('/:id', passport.authenticate('jwt', { session: false }),usersController.updateUser);
 
-router.delete('/:id', usersController.deleteUser);
+router.delete('/:id', passport.authenticate('jwt', { session: false }),usersController.deleteUser);
 
 module.exports = router;

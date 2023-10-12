@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 function checkSQLEntry(entry) {
   const onlyLettersPattern = /^[A-Za-z0-9]+$/;
   // SQL injection
@@ -19,4 +21,12 @@ function checkSQLEntry(entry) {
   return false;
 }
 
-module.exports = { checkSQLEntry };
+async function checkPassword(cypher, pass) {
+  return await bcrypt.compare(cypher, pass);
+}
+
+async function hashPassword(plain) {
+  return await bcrypt.hash(plain, 10);
+}
+
+module.exports = { checkSQLEntry, checkPassword, hashPassword };

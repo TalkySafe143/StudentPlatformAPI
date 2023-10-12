@@ -3,6 +3,8 @@ const router = express.Router();
 const upload = require('multer')();
 const materialesController = require('../controllers/materialController');
 const { multerMiddleware } = require('../utils/multerConfig')
+const passport = require("passport");
+require("../utils/auth/strategies/jwt");
 
 /**
  * @swagger
@@ -20,7 +22,7 @@ const { multerMiddleware } = require('../utils/multerConfig')
  *              description: Algo ocurrió al momento de crear el material
  *
  */
-router.post('/',upload.single('uploadedFiles'), materialesController.uploadFile);
+router.post('/', passport.authenticate('jwt', { session: false }) ,upload.single('uploadedFiles'), materialesController.uploadFile);
 
 /**
  * @swagger
@@ -34,8 +36,8 @@ router.post('/',upload.single('uploadedFiles'), materialesController.uploadFile)
  *              description: Algo ocurrió al momento de recuperar los materiales
  *
  */
-router.get('/', materialesController.getAllFiles);
+router.get('/', passport.authenticate('jwt', { session: false }) ,materialesController.getAllFiles);
 
-router.delete('/:key', materialesController.deleteMaterial);
+router.delete('/:key', passport.authenticate('jwt', { session: false }) ,materialesController.deleteMaterial);
 
 module.exports = router;
