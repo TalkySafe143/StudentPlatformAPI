@@ -1,8 +1,9 @@
 const passport = require("passport")
 const jwt = require("jsonwebtoken");
 const encryptionWorker = require("../utils/encryptionWorker");
-const usersController = require("usersController");
-
+const usersController = require("./usersController");
+const boom = require('@hapi/boom')
+const config = require('../config');
 async function login(req, res, next) {
   passport.authenticate('basic', {}, (err, user) => {
     try {
@@ -13,7 +14,7 @@ async function login(req, res, next) {
         if (err) return next(err);
 
         const payload = {
-          sub: user
+          sub: user[0]
         };
 
         const token = jwt.sign(payload, config.JWT_SECRET, { expiresIn: '30m' });
@@ -46,7 +47,7 @@ async function register(req, res, next) {
       () => {}
     );
 
-    if (userExist) return next(boom.badRequest("Este usuario ya esta creado"));
+    if (userExist[0]) return next(boom.badRequest("Este usuario ya esta creado"));
 
     const userCreated = await usersController.createUser(
       { body: user, jwtProcess: true },

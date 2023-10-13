@@ -14,9 +14,9 @@ passport.use(
           () => {}
         );
 
-        if (!user) return cb(boom.unauthorized('Alguna informacion esta incorrecta'), null);
+        if (!user[0]) return cb(boom.unauthorized('Alguna informacion esta incorrecta'), null);
 
-        if (!(await encryptionWorker.checkPassword(user.password, password))) return cb(boom.unauthorized('Alguna informacion esta incorrecta'), null);
+        if (!(await encryptionWorker.checkPassword(user[0].password, password))) return cb(boom.unauthorized('Alguna informacion esta incorrecta'), null);
 
         delete user.password;
 

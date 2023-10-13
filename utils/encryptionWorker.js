@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 function checkSQLEntry(entry) {
   const onlyLettersPattern = /^[A-Za-z0-9]+$/;
   // SQL injection
-  for (const [key, value] of Object.entries(entry)) {
+  for (let [key, value] of Object.entries(entry)) {
+      value = value.toString();
       if (key.toUpperCase().includes("SELECT")
           || key.toUpperCase().includes("DELETE")
           || key.toUpperCase().includes("INSERT")
@@ -11,9 +12,7 @@ function checkSQLEntry(entry) {
           || value.toUpperCase().includes("SELECT")
           || value.toUpperCase().includes("DELETE")
           || value.toUpperCase().includes("INSERT")
-          || value.toUpperCase().includes("UPDATE")
-          || !key.match(onlyLettersPattern)
-          || !value.match(onlyLettersPattern)) {
+          || value.toUpperCase().includes("UPDATE")) {
           return true;
       }
   }
@@ -22,7 +21,7 @@ function checkSQLEntry(entry) {
 }
 
 async function checkPassword(cypher, pass) {
-  return await bcrypt.compare(cypher, pass);
+  return await bcrypt.compare(pass, cypher);
 }
 
 async function hashPassword(plain) {

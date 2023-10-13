@@ -14,14 +14,14 @@ passport.use(
     async (payload, cb) => {
       try {
         const user = await userController.getOneUser( // Simular llamada a la API
-          { params: { id: payload.cc }, jwtProcess: true }, 
+          { params: { id: payload.sub.cc }, jwtProcess: true },
           {}, 
           () => {}
         );
 
-        if (!user) return cb(boom.unauthorized('No tiene JWT'), null);
+        if (!user[0]) return cb(boom.unauthorized('La cuenta no se encontró'), null);
 
-        delete user.password;
+        delete user[0].password;
 
         return cb(null, user);
       } catch (e) {

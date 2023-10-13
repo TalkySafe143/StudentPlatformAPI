@@ -27,7 +27,6 @@ async function uploadFile(req, res, next) {
                 error: null
             })
         } catch (e) {
-            console.log(e)
             if (e === {}) {
                 return res.status(200).json({
                     data: "Material publicado correctamente",

@@ -30,6 +30,7 @@ const usersRouter = require('./routes/users');
 const materialRouter = require('./routes/material');
 const testRouter = require('./routes/test');
 const materiasRouter = require('./routes/materias');
+const authRouter = require("./routes/auth");
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/test', testRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/material', materialRouter);
 app.use('/api/materias', materiasRouter)
+app.use('/api/auth', authRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(swaggerSpecs)))
 
 
@@ -61,8 +63,7 @@ app.use((err, req, res, next) => {
   // render the error page
   res.status(err.status || 500);
   //res.render('error');
-  res.json(err)
-  console.log(err)
+  res.json({err: err.message})
 });
 
 module.exports = app;

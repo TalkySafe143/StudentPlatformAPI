@@ -1,11 +1,15 @@
 const RDS = require('../lib/rds');
 const rds = new RDS();
 async function getAllSubjects(req, res, next) {
-    const data = await rds.getData('materia', []);
-    return res.status(200).json({
-        data,
-        error: ""
-    })
+    try {
+        const data = await rds.getData('materia', []);
+        return res.status(200).json({
+            data,
+            error: ""
+        })
+    } catch (e) {
+        next(e)
+    }
 }
 
 async function getOneSubject(req, res, next) {
@@ -27,7 +31,6 @@ async function getOneSubject(req, res, next) {
             err: null
         })
     } catch(e){
-        console.log(e)
         return res.status(400).json({
             message: "Ups, ocurrió un error",
             err: e

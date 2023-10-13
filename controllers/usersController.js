@@ -11,23 +11,36 @@ async function createUser(req, res, next) {
         error: "Ups, al parecer tu query esta mal estructurada"
       })
     }
-  
-    const data = await rds.insertData("estudiante", user);
 
-    if (req.jwtProcess) return data;
-  
-    res.status(200).json({
-        message: "Usuario creado exitosamente",
-        data
-    })
+    try {
+        user.password = await encryptionWorker.hashPassword(user.password);
+
+        for (let [key, value] of Object.entries(user)) {
+            if (typeof value === 'string') user[key]=`'${value}'`;
+        }
+
+        const data = await rds.insertData("estudiante", user);
+        if (req.jwtProcess) return data;
+
+        return res.status(200).json({
+            message: "Usuario creado exitosamente",
+            data
+        })
+    } catch (e) {
+        next(e);
+    }
 }
 
 async function getAllUsers(req, res, next) {
-    const data = await rds.getData("estudiante", []);
-    res.status(200).json({
-        message: "Usuarios extraidos correctamente",
-        data
-    })
+    try {
+        const data = await rds.getData("estudiante", []);
+        return res.status(200).json({
+            message: "Usuarios extraidos correctamente",
+            data
+        })
+    } catch (e) {
+        next(e)
+    }
 }
 
 async function getOneUser(req, res, next){
@@ -42,14 +55,18 @@ async function getOneUser(req, res, next){
     }]
   }
   
-  const data = await rds.buildSelectQuery(queryObject);
+  try {
+      const data = await rds.buildSelectQuery(queryObject);
 
-  if (req.jwtProcess) return data;
-  
-  res.status(200).json({
-    message: "Usuario extraido correctamente",
-    data
-  })
+      if (req.jwtProcess) return data;
+
+      return res.status(200).json({
+          message: "Usuario extraido correctamente",
+          data
+      })
+  } catch (e) {
+      next(e);
+  }
 }
 
 async function updateUser(req, res, next) {
@@ -64,7 +81,7 @@ async function updateUser(req, res, next) {
   
   const updateObject = {
     "column": Object.entries(req.body)[0][0],
-    "newValue": Object.entries(req.body)[0][1],
+    "newValue": `'${Object.entries(req.body)[0][1]}'`,
     "condition": [{
       "column": "cc",
       "type" : "=",
@@ -72,12 +89,16 @@ async function updateUser(req, res, next) {
     }]
   }
 
-  const data = await rds.buildUpdateQuery("estudiante", updateObject);
+  try {
+      const data = await rds.buildUpdateQuery("estudiante", updateObject);
 
-  res.status(200).json({
-    message: "Usuario actualizado correctamente",
-    data
-  })
+      return res.status(200).json({
+          message: "Usuario actualizado correctamente",
+          data
+      })
+  } catch (e) {
+      next(e)
+  }
 }
 
 async function deleteUser(req, res, next) {
@@ -90,12 +111,16 @@ async function deleteUser(req, res, next) {
     }]
   }
 
-  const data = await rds.buildDeleteQuery("estudiante", deleteObject);
+  try {
+      const data = await rds.buildDeleteQuery("estudiante", deleteObject);
 
-  res.status(200).json({
-    message: "Usuario eliminado exitosamente",
-    data
-  })
+      return res.status(200).json({
+          message: "Usuario eliminado exitosamente",
+          data
+      })
+  } catch (e) {
+      next(e)
+  }
 }
 
 module.exports = { createUser, getAllUsers, getOneUser, updateUser, deleteUser };
