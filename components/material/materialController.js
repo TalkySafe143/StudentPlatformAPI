@@ -1,5 +1,5 @@
-const awsS3 = require('../lib/s3')
-const RDS = require('../lib/rds');
+const awsS3 = require('../../lib/s3')
+const RDS = require('../../lib/rds');
 const fs = require("fs");
 const S3 = new awsS3();
 const rds = new RDS();

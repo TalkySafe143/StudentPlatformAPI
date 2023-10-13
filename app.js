@@ -25,12 +25,10 @@ const swaggerSpecs = {
   apis: [`${path.join(__dirname, './routes/*.js')}`]
 }
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const materialRouter = require('./routes/material');
-const testRouter = require('./routes/test');
-const materiasRouter = require('./routes/materias');
-const authRouter = require("./routes/auth");
+const usersRouter = require('./components/users/usersRoutes');
+const materialRouter = require('./components/material/materialRoutes');
+const materiasRouter = require('./components/materias/materiasRoutes');
+const authRouter = require("./components/auth/authRoutes");
 
 const app = express();
 
@@ -40,8 +38,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/api/', indexRouter);
-app.use('/api/test', testRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/material', materialRouter);
 app.use('/api/materias', materiasRouter)

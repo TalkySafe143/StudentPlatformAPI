@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('multer')();
-const materialesController = require('../controllers/materialController');
-const { multerMiddleware } = require('../utils/multerConfig')
+const materialesController = require('./materialController');
+const { multerMiddleware } = require('../../utils/multerConfig')
 const passport = require("passport");
-require("../utils/auth/strategies/jwt");
+require("../../utils/auth/strategies/jwt");
 
 /**
  * @swagger

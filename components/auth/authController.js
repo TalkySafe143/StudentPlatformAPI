@@ -1,9 +1,9 @@
 const passport = require("passport")
 const jwt = require("jsonwebtoken");
-const encryptionWorker = require("../utils/encryptionWorker");
-const usersController = require("./usersController");
+const encryptionWorker = require("../../utils/encryptionWorker");
+const usersController = require("../users/usersController");
 const boom = require('@hapi/boom')
-const config = require('../config');
+const config = require('../../config');
 async function login(req, res, next) {
   passport.authenticate('basic', {}, (err, user) => {
     try {

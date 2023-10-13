@@ -1,7 +1,8 @@
-const RDS = require('../lib/rds');
+const RDS = require('../../lib/rds');
 const rds = new RDS();
+const boom = require('@hapi/boom')
 
-const encryptionWorker = require("../utils/encryptionWorker");
+const encryptionWorker = require("../../utils/encryptionWorker");
 
 async function createUser(req, res, next) {
     const user = req.body;
@@ -113,6 +114,8 @@ async function deleteUser(req, res, next) {
 
   try {
       const data = await rds.buildDeleteQuery("estudiante", deleteObject);
+
+      if (data.affectedRows === 0) return next(boom.badRequest('No existe un usuario con ese ID'))
 
       return res.status(200).json({
           message: "Usuario eliminado exitosamente",

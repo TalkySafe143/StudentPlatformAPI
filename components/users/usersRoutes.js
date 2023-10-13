@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const usersController = require('../controllers/usersController');
+const usersController = require('./usersController');
 const passport = require("passport");
-require("../utils/auth/strategies/jwt");
+require("../../utils/auth/strategies/jwt");
 
 /* GET users listing. */
 

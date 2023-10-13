@@ -1,4 +1,4 @@
-const RDS = require('../lib/rds');
+const RDS = require('../../lib/rds');
 const rds = new RDS();
 async function getAllSubjects(req, res, next) {
     try {
