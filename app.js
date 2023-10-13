@@ -18,7 +18,7 @@ const swaggerSpecs = {
     },
     servers: [
       {
-        url: "http://localhost:3000"
+        url: "https://armidale-box-jellyfish-zpxt.1.us-1.fl0.io"
       }
     ]
   },
