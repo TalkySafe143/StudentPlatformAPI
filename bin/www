@@ -3,9 +3,9 @@
 /**
  * Module dependencies.
  */
-
+var config = require('../config')
 var app = require('../app');
-const debug = require('debug')('www');
+var debug = require('debug')('javeplatform:www');
 var http = require('http');
 
 /**
@@ -86,5 +86,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  debug(`Escuchando en ${process.env.BASE_URL}:${addr.port}`);
 }

@@ -1,5 +1,5 @@
-const awsS3 = require('../lib/s3')
-const RDS = require('../lib/rds');
+const awsS3 = require('../../lib/s3')
+const RDS = require('../../lib/rds');
 const fs = require("fs");
 const S3 = new awsS3();
 const rds = new RDS();
@@ -27,7 +27,6 @@ async function uploadFile(req, res, next) {
                 error: null
             })
         } catch (e) {
-            console.log(e)
             if (e === {}) {
                 return res.status(200).json({
                     data: "Material publicado correctamente",
