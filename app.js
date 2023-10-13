@@ -29,6 +29,7 @@ const usersRouter = require('./components/users/usersRoutes');
 const materialRouter = require('./components/material/materialRoutes');
 const materiasRouter = require('./components/materias/materiasRoutes');
 const authRouter = require("./components/auth/authRoutes");
+const subStudentRouter = require('./components/materiasXestudiante/subStudentRoutes');
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/material', materialRouter);
 app.use('/api/materias', materiasRouter)
 app.use('/api/auth', authRouter);
+app.use('/api/materiaXestudiante', subStudentRouter)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(swaggerSpecs)))
 
 
