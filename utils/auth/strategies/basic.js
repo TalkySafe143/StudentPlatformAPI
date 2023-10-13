@@ -2,7 +2,7 @@ const passport = require("passport");
 const { BasicStrategy } = require("passport-http");
 const boom = require("@hapi/boom");
 const encryptionWorker = require("../../encryptionWorker");
-const userController = require("../../../controllers/usersController");
+const userController = require("../../../components/users/usersController");
 
 passport.use(
   new BasicStrategy(

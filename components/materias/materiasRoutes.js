@@ -1,8 +1,8 @@
 const express = require('express')
-const materiasController = require("../controllers/materiasController");
+const materiasController = require("./materiasController");
 const router = express.Router();
 const passport = require("passport");
-require("../utils/auth/strategies/jwt");
+require("../../utils/auth/strategies/jwt");
 
 
 /**

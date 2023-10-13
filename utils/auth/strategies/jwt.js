@@ -3,7 +3,7 @@ const passport = require("passport");
 const { Strategy, ExtractJwt } = require("passport-jwt");
 const config = require("../../../config");
 
-const userController = require("../../../controllers/usersController");
+const userController = require("../../../components/users/usersController");
 
 passport.use(
   new Strategy(
