@@ -1,6 +1,6 @@
 const awsS3 = require('../../lib/s3')
 const RDS = require('../../lib/rds');
-const fs = require("fs");
+const fs = require("fs/promises");
 const S3 = new awsS3();
 const rds = new RDS();
 const uuid = require('uuid').v4
@@ -9,8 +9,8 @@ async function uploadFile(req, res, next) {
     const { title, desc, materia_materia_id, estudiante_cc } = req.body;
     if (req.file) {
         try {
-            fs.writeFileSync(`${__dirname}/uploads/${key}-desc.txt`, desc, {encoding:"utf8"});
-            const descFile = fs.readFileSync(`${__dirname}/uploads/${key}-desc.txt`);
+            await fs.writeFile(`${__dirname}/uploads/${key}-desc.txt`, desc, {encoding:"utf8"});
+            const descFile = await fs.readFile(`${__dirname}/uploads/${key}-desc.txt`);
             await S3.createFileObject(`${key}-desc.txt`, descFile, key);
             const ruta = await S3.createFileObject(req.file.originalname, req.file.buffer, key);
             const queryEntries = {
