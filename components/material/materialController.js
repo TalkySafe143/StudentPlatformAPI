@@ -7,38 +7,37 @@ const uuid = require('uuid').v4
 async function uploadFile(req, res, next) {
     const key = uuid();
     const { title, desc, materia_materia_id, estudiante_cc } = req.body;
-    if (req.file) {
-        try {
-            await fs.writeFile(`${__dirname}/uploads/${key}-desc.txt`, desc, {encoding:"utf8"});
-            const descFile = await fs.readFile(`${__dirname}/uploads/${key}-desc.txt`);
-            await S3.createFileObject(`${key}-desc.txt`, descFile, key);
-            const ruta = await S3.createFileObject(req.file.originalname, req.file.buffer, key);
-            const queryEntries = {
-                title: `'${title}'`,
-                description: `'${desc.substring(0, 20)}'`,
-                link: `'https://materiales-javeplatform.s3.amazonaws.com/${ruta}'`,
-                estudiante_cc: `'${estudiante_cc}'`,
-                material_id: `'${key}'`,
-                materia_materia_id: `'${materia_materia_id}'`
-            }
-            await rds.insertData('material', queryEntries);
+    try {
+        fs.writeFileSync(`${__dirname}/uploads/${key}-desc.txt`, desc, {encoding:"utf8"});
+        const descFile = fs.readFileSync(`${__dirname}/uploads/${key}-desc.txt`);
+        const ruta = await S3.createFileObject(`${key}-desc.txt`, descFile, key);
+        if (req.file) await S3.createFileObject(req.file.originalname, req.file.buffer, key);
+        const queryEntries = {
+            title: `'${title}'`,
+            description: `'${desc.substring(0, 20)}'`,
+            link: `'https://materiales-javeplatform.s3.amazonaws.com/${ruta}'`,
+            estudiante_cc: `'${estudiante_cc}'`,
+            material_id: `'${key}'`,
+            materia_materia_id: `'${materia_materia_id}'`
+        }
+        await rds.insertData('material', queryEntries);
+        return res.status(200).json({
+            data: "Material publicado correctamente",
+            error: null
+        })
+    } catch (e) {
+        if (e === {}) {
             return res.status(200).json({
                 data: "Material publicado correctamente",
                 error: null
             })
-        } catch (e) {
-            if (e === {}) {
-                return res.status(200).json({
-                    data: "Material publicado correctamente",
-                    error: null
-                })
-            }
-            return res.status(400).json({
-                message: 'Ups, ocurrió un error',
-                error: e
-            })
         }
+        return res.status(400).json({
+            message: 'Ups, ocurrió un error',
+            error: e
+        })
     }
+
 }
 
 async function getAllFiles(req, res, next) {
