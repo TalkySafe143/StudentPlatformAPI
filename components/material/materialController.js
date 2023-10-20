@@ -8,8 +8,10 @@ async function uploadFile(req, res, next) {
     const key = uuid();
     const { title, desc, materia_materia_id, estudiante_cc } = req.body;
     try {
-        fs.writeFileSync(`${__dirname}/uploads/${key}-desc.txt`, desc, {encoding:"utf8"});
-        const descFile = fs.readFileSync(`${__dirname}/uploads/${key}-desc.txt`);
+        await fs.writeFile(`${__dirname}/uploads/${key}-desc.txt`, desc, {encoding:"utf8"});
+        console.log("dsadasda")
+        const descFile = await fs.readFile(`${__dirname}/uploads/${key}-desc.txt`);
+
         const ruta = await S3.createFileObject(`${key}-desc.txt`, descFile, key);
         if (req.file) await S3.createFileObject(req.file.originalname, req.file.buffer, key);
         const queryEntries = {
