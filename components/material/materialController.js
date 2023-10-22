@@ -12,8 +12,8 @@ async function uploadFile(req, res, next) {
         console.log("dsadasda")
         const descFile = await fs.readFile(`${__dirname}/uploads/${key}-desc.txt`);
 
-        const ruta = await S3.createFileObject(`${key}-desc.txt`, descFile, key);
-        if (req.file) await S3.createFileObject(req.file.originalname, req.file.buffer, key);
+        let ruta = await S3.createFileObject(`${key}-desc.txt`, descFile, key);
+        if (req.file) ruta = await S3.createFileObject(req.file.originalname, req.file.buffer, key);
         const queryEntries = {
             title: `'${title}'`,
             description: `'${desc.substring(0, 20)}'`,
