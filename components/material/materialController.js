@@ -44,7 +44,22 @@ async function uploadFile(req, res, next) {
 
 async function getAllFiles(req, res, next) {
     try {
-        const data = await rds.getData('material', []);
+        let data;
+
+        if (!req.query) data = await rds.getData('material', []);
+        else if (req.query["estudiante_cc"]){
+            const queryObject = {
+                "FROM": ["material"],
+                "WHERE": [{
+                    column: "estudiante_cc",
+                    type: "=",
+                    value: `'${req.query["estudiante_cc"]}'`
+                }]
+            }
+
+            data = await rds.buildSelectQuery(queryObject);
+        }
+
         return res.status(200).json({
             message: 'Objetos recuperados correctamente',
             data
