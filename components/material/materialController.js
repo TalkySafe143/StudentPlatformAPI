@@ -44,9 +44,9 @@ async function uploadFile(req, res, next) {
 
 async function getAllFiles(req, res, next) {
     try {
-        let data;
-
-        if (!req.query) data = await rds.getData('material', []);
+        let data = [];
+        
+        if (!Object.entries(req.query).length) data = await rds.getData('material', []);
         else if (req.query["estudiante_cc"]){
             const queryObject = {
                 "FROM": ["material"],
